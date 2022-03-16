@@ -4,9 +4,7 @@ class HeaderFooterWare:
     
     def __call__(self, environ, start_response, *args, **kwargs):
         wrapped_app_response = self.wrapped_app(environ, start_response)
-        print(wrapped_app_response)
         response = b'----\n' + wrapped_app_response[0] + b'\n'
-        print(response)
         return [response]
 
 class ReverseWare:
