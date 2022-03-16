@@ -1,3 +1,14 @@
+class HeaderFooterWare:
+    def __init__(self, app):
+        self.wrapped_app = app
+    
+    def __call__(self, environ, start_response, *args, **kwargs):
+        wrapped_app_response = self.wrapped_app(environ, start_response)
+        print(wrapped_app_response)
+        response = b'----\n' + wrapped_app_response[0] + b'\n'
+        print(response)
+        return [response]
+
 class ReverseWare:
     def __init__(self, app):
         self.wrapped_app = app
@@ -33,7 +44,7 @@ class Application(object):
         return [output]
 
 #application = Application()
-application = ReverseWare(Application())
+application = HeaderFooterWare(ReverseWare(Application()))
 """
 def application(environ, start_response):
     status = '200 OK'
